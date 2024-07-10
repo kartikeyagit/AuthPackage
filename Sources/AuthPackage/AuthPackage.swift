@@ -12,8 +12,7 @@ public class WebService {
     }
     
     public func fetchAPI<T: Codable>(url: URL, completion: @escaping (T?) -> Void) {
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 else { return completion(nil) }
             do {
@@ -22,7 +21,7 @@ public class WebService {
             } catch {
                 completion(nil)
             }
-            
         }
+        task.resume()
     }
 }
